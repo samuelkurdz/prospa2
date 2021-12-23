@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Form</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <form
+      id="form"
+      onchange="handleFormChange(event)"
+      onsubmit="event.preventDefault();handleSubmitForm(event)"
+      onreset="event.preventDefault(); getSubAccounts(); alert('form has been reset');"
+    >
+      <h2 id="user">Acount form</h2>
+
+      <div id="form-inputs"></div>
+
+      <div class="buttons">
+        <button id="submit" type="submit">Save</button>
+        <button id="reset" type="reset">Reset</button>
+      </div>
+    </form>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
+
+<!-- rodney@getprospa.com -->
