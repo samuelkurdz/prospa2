@@ -2,6 +2,11 @@
 
 let userAccountsDetails;
 const forminputContainer = document.getElementById('form-inputs');
+const loader = document.querySelector('.loader');
+
+function toggleLoader () {
+  loader.classList.toggle('hidden');
+}
 
 let myHeaders = new Headers();
 myHeaders.append(
@@ -19,14 +24,19 @@ const baseURL = "https://stage.getprospa.com/api/v1/";
 const getSubAccountsEndpoint = "account/holder_sub_wallets/";
 
 function getSubAccounts() {
+  loader.classList.remove('hidden');
   fetch(baseURL + getSubAccountsEndpoint + biz_account_id, requestOptions)
     .then((res) => res.json())
     .then((data) => {
       userAccountsDetails = data;
       setUserMessage();
       processUserAccountForm();
+      loader.classList.add('hidden');
     })
-    .catch((error) => console.log("error", error));
+    .catch((error) => {
+      console.log("error", error);
+      loader.classList.add('hidden');
+    });
 }
 
 getSubAccounts();
@@ -92,6 +102,7 @@ function inputFieldCreator(accountDetail) {
 
 //  form handlers
 function handleFormChange(event) {
+  toggleLoader();
   const currentInput = document.querySelector('[account-type="current"]');
   let otherAllocations = 0;
 
@@ -110,9 +121,11 @@ function handleFormChange(event) {
 
   const newCurrentValue = 100 - otherAllocations;
   currentInput.setAttribute('value', newCurrentValue);
+  toggleLoader();
 }
 
 function handleSubmitForm(event) {
+  toggleLoader();
   event.preventDefault();
 
   const formdata = new FormData();
@@ -143,8 +156,12 @@ function handleSubmitForm(event) {
     .then(result => {
       if (result.message) alert(result.message);
       console.log(result);
+      toggleLoader();
     })
-    .catch(error => console.log('error', error));
+    .catch(error => {
+      console.log('error', error);
+      toggleLoader();
+    });
 
 }
 
