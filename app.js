@@ -8,7 +8,7 @@ function toggleLoader () {
   loader.classList.toggle('hidden');
 }
 
-let myHeaders = new Headers();
+const myHeaders = new Headers();
 myHeaders.append(
   "Authorization",
   "Token 9eefc6f27f679075e33fc74de892a879671a659a357e0b29788085886f3a1af4"
@@ -140,7 +140,6 @@ function handleSubmitForm(event) {
     })
   });
   formdata.append("wallet_allocation", JSON.stringify(postData));
-  // formdata.append("wallet_allocation", "[{\"walletID\":34, \"walletShare\":20}, {\"walletID\":35, \"walletShare\":40},{\"walletID\":138, \"walletShare\":10},{\"walletID\":139, \"walletShare\":10},{\"walletID\":140, \"walletShare\":10},{\"walletID\":141, \"walletShare\":10}]");
 
   const requestOptions = {
     method: 'POST',
@@ -163,5 +162,26 @@ function handleSubmitForm(event) {
       toggleLoader();
     });
 
+}
+
+function handleReset(event) {
+
+  var formdata = new FormData();
+  formdata.append("biz_account_id", biz_account_id);
+
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: formdata,
+    redirect: 'follow'
+  };
+
+  fetch("https://stage.getprospa.com/api/v1/account/readjust_wallet_share/", requestOptions)
+    .then(response => response.text())
+    .then(result => {
+      console.log(result);
+      getSubAccounts();
+    })
+    .catch(error => console.log('error', error));
 }
 
