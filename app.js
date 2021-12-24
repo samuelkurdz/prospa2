@@ -75,11 +75,12 @@ function inputFieldCreator(accountDetail) {
   const { biz_wallet_id, biz_wallet_type, incoming_allocation } = accountDetail;
 
   let formGroup = document.createElement('div');
-  let span = document.createElement('span');
+  let label = document.createElement('label');
   let input = document.createElement('input');
 
-  span.innerHTML = biz_wallet_id + ' ' + biz_wallet_type;
-  formGroup.appendChild(span);
+  label.innerHTML = biz_wallet_id + ' ' + biz_wallet_type;
+  label.setAttribute('for', biz_wallet_id);
+  formGroup.appendChild(label);
 
   input.setAttribute('type', 'number');
   input.setAttribute('name', biz_wallet_id + biz_wallet_type);
