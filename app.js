@@ -2,11 +2,6 @@
 
 let userAccountsDetails;
 const forminputContainer = document.getElementById('form-inputs');
-const loader = document.querySelector('.loader');
-
-function toggleLoader () {
-  loader.classList.toggle('hidden');
-}
 
 const myHeaders = new Headers();
 myHeaders.append(
@@ -24,18 +19,15 @@ const baseURL = "https://stage.getprospa.com/api/v1/";
 const getSubAccountsEndpoint = "account/holder_sub_wallets/";
 
 function getSubAccounts() {
-  loader.classList.remove('hidden');
   fetch(baseURL + getSubAccountsEndpoint + biz_account_id, requestOptions)
     .then((res) => res.json())
     .then((data) => {
       userAccountsDetails = data;
       setUserMessage();
       processUserAccountForm();
-      loader.classList.add('hidden');
     })
     .catch((error) => {
       console.log("error", error);
-      loader.classList.add('hidden');
     });
 }
 
@@ -103,7 +95,6 @@ function inputFieldCreator(accountDetail) {
 
 //  form handlers
 function handleFormChange(event) {
-  toggleLoader();
   const currentInput = document.querySelector('[account-type="current"]');
   let otherAllocations = 0;
 
@@ -122,11 +113,9 @@ function handleFormChange(event) {
 
   const newCurrentValue = 100 - otherAllocations;
   currentInput.setAttribute('value', newCurrentValue);
-  toggleLoader();
 }
 
 function handleSubmitForm(event) {
-  toggleLoader();
   event.preventDefault();
 
   const formdata = new FormData();
@@ -136,8 +125,8 @@ function handleSubmitForm(event) {
   let postData = [];
   inputs.forEach(input => {
     postData.push({
-      walletID: input.attributes.getNamedItem('id').value,
-      walletShare: input.value,
+      walletID: Number(input.attributes.getNamedItem('id').value),
+      walletShare: Number(input.value),
     })
   });
   formdata.append("wallet_allocation", JSON.stringify(postData));
@@ -156,11 +145,9 @@ function handleSubmitForm(event) {
     .then(result => {
       if (result.message) alert(result.message);
       console.log(result);
-      toggleLoader();
     })
     .catch(error => {
       console.log('error', error);
-      toggleLoader();
     });
 
 }
